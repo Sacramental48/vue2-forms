@@ -1,5 +1,5 @@
 <script>
-import { required, numeric, maxLength, alpha } from 'vuelidate/lib/validators'
+import { required, numeric, maxLength } from 'vuelidate/lib/validators'
 
 export default {
     name: 'DocumentInfoForm',

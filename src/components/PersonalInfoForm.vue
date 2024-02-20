@@ -79,19 +79,10 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
                 numeric,
             },
 
-            gender: {
-
-            },
-
             clientGroup: {
                 required,
 
             },
-
-            doctor: {
-
-            }
-
         },
     }
 </script>
@@ -177,7 +168,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
 
         <section class="form__group">
             <label class="form__label" for="gender">Пол:</label>
-            <select id="gender" name="gender" v-model="$v.gender.$model">
+            <select id="gender" name="gender" v-model="gender">
                 <option value="" disabled selected>Выберите пол</option>
                 <option value="male">Мужчина</option>
                 <option value="female">Женщина</option>
@@ -196,7 +187,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
         
         <section class="form__group">
             <label class="form__label" for="doctor">Лечащий врач:</label>
-            <select  name="doctor" id="doctor" v-model="$v.doctor.$model">
+            <select  name="doctor" id="doctor" v-model="doctor">
                 <option value="" disabled checked>Выберите врача</option>
                 <option value="Иванов">Иванов</option>
                 <option value="Захаров">Захаров</option>

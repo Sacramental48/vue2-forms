@@ -5,17 +5,24 @@
     &__form
         display: flex
         flex-direction: column
+        align-items: center
         flex-grow: 1
         background: #dae0e7
         max-width: 800px
         padding: 20px 25px
         border-radius: 4px
         select
-            margin-bottom: 20px
+            font-size: 16px
             outline: none
+            option
+                font-size: 16px
+                padding: 4px
+        
     &__group-buttons
         display: flex
-        justify-content: space-between
+        justify-content: flex-end
+        gap: 10px
+        width: 100%
         button
             border: none
             cursor: pointer
@@ -23,14 +30,19 @@
             color: #000
             border-radius: 4px
             padding: 6px 8px
-    &__button
+    &__send
         margin-top: 20px
         cursor: pointer
         background-color: #ffffff
         border-radius: 4px
         border: none
         height: 30px
+        width: 60%
 .form
+    &__section
+        display: flex
+        flex-direction: column
+        width: 100%
     &__group
         display: flex
         flex-direction: column
