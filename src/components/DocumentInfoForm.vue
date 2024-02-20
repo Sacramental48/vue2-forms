@@ -1,5 +1,5 @@
 <script>
-import { required, numeric, maxLength } from 'vuelidate/lib/validators'
+import { required, numeric, maxLength, minLength  } from 'vuelidate/lib/validators'
 
 export default {
     name: 'DocumentInfoForm',
@@ -17,8 +17,8 @@ export default {
             return {
                 documentType: this.documentType,
                 series: this.series,
-                number: this.patronymic,
-                issuedBy: this.birthdate,
+                number: this.number,
+                issuedBy: this.issuedBy,
                 issueDate: this.issueDate,
             };
         },
@@ -32,17 +32,18 @@ export default {
     },
     validations: {
         documentType: {
-            required,
-
+            required
         },
 
         series: {
             numeric,
+            minLength: minLength(4),
             maxLength: maxLength(4),
         },
         
         number: {
             numeric,
+            minLength: minLength(6),
             maxLength: maxLength(6),
         },
         
@@ -54,7 +55,6 @@ export default {
         
         issueDate: {
             required,
-            numeric,
             maxDate(value) {
                 if(value === '') {
                     return true;
@@ -84,28 +84,28 @@ export default {
             <label class="form__label" for="series">Серия</label>
             <input 
                 class="form__input" 
-                :class="{'input-error': !$v.series.maxLength || !$v.series.numeric}"
+                :class="{'input-error': !$v.series.minLength || !$v.series.maxLength || !$v.series.numeric}"
                 type="text" 
                 id="series" 
                 name="series" 
                 placeholder="XXXX"
                 v-model.trim="$v.series.$model"
             />
-            <div class="form__error" v-if="!$v.series.maxLength || !$v.series.numeric">Серия должна состоять из четырех цифр.</div>
+            <div class="form__error" v-if="!$v.series.minLength || !$v.series.maxLength || !$v.series.numeric">Серия должна состоять из {{$v.series.$params.maxLength.max}} цифр.</div>
         </section>
 
         <section class="form__group">
             <label class="form__label" for="number">Номер</label>
             <input 
                 class="form__input" 
-                :class="{'input-error': !$v.number.maxLength || !$v.number.numeric}"
+                :class="{'input-error': !$v.number.minLength || !$v.number.maxLength || !$v.number.numeric}"
                 type="text" 
                 id="number" 
                 name="number" 
                 placeholder="XXXXXX" 
                 v-model.trim="$v.number.$model"
             />
-            <div class="form__error" v-if="!$v.number.maxLength || !$v.number.numeric">Номер должен состоять из шести цифр.</div>
+            <div class="form__error" v-if="!$v.number.minLength || !$v.number.maxLength || !$v.number.numeric">Номер должен состоять из {{$v.number.$params.maxLength.max}} цифр.</div>
         </section>
 
         <section class="form__group">

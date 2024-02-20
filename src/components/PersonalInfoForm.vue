@@ -75,6 +75,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
 
             phone: {
                 required,
+                minLength: minLength(11),
                 maxLength: maxLength(11),
                 numeric,
             },
@@ -102,7 +103,8 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
             <div class="form__error" v-if="$v.name.$dirty && !$v.name.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.name.minLength">В имени должно быть не менее {{$v.name.$params.minLength.min}} букв.</div>
             <div class="form__error" v-if="!$v.name.maxLength">В имени должно быть не более {{$v.name.$params.maxLength.max}} букв.</div>
-            <div class="form__error" v-if="$v.name.$dirty && !$v.name.validPersonName && $v.name.$model">Имя должно начинаться с заглавной буквы и не содержать цифры.</div>
+            <div class="form__error" v-if="!$v.name.$dirty && !$v.name.validPersonName && $v.name.$model">Имя должно начинаться с заглавной буквы и не содержать цифры.</div>
+
         </section>
 
         <section class="form__group">
@@ -155,7 +157,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
             <label class="form__label" for="phone">Номер телефона:</label>
             <input 
                 class="form__input" 
-                :class="{'input-error': !$v.phone.numeric && $v.phone.$dirty }" 
+                :class="{'input-error': !$v.phone.minLength || !$v.phone.numeric }" 
                 type="tel" 
                 id="phone" 
                 name="phone" 
@@ -163,6 +165,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
             />
             <div class="form__error" v-if="$v.phone.$dirty && !$v.phone.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.phone.numeric">Введен некорректный номер.</div>
+            <div class="form__error" v-if="!$v.phone.minLength">Номер должен состоять из {{ $v.phone.$params.maxLength.max }} цифр.</div>
             <div class="form__error" v-if="!$v.phone.maxLength">Введен вами номер превышает {{ $v.phone.$params.maxLength.max }} символов.</div>
         </section>
 
