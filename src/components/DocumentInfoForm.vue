@@ -1,6 +1,8 @@
 <script>
 import { required, numeric, maxLength, alpha } from 'vuelidate/lib/validators'
+
 export default {
+    name: 'DocumentInfoForm',
     data() {
         return {
             documentType: '',
@@ -9,6 +11,17 @@ export default {
             issuedBy: '',
             issueDate: '',
         }
+    },
+    methods: {
+        getFormData() {
+            return {
+                documentType: this.documentType,
+                series: this.series,
+                number: this.patronymic,
+                issuedBy: this.birthdate,
+                issueDate: this.issueDate,
+            };
+        },
     },
     validations: {
         documentType: {

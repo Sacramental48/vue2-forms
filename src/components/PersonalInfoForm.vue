@@ -24,7 +24,20 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
                     const withoutDigits = !/\d/.test(value);
                     return startsWithUppercase && withoutDigits;
                 }
-            }
+            },
+            getFormData() {
+                return {
+                    name: this.name,
+                    surname: this.surname,
+                    patronymic: this.patronymic,
+                    birthdate: this.birthdate,
+                    phone: this.phone,
+                    gender: this.gender,
+                    clientGroup: this.clientGroup,
+                    doctor: this.doctor,
+                    checkbox: this.checkbox
+                };
+            },
         },
         validations: {
             name: {
@@ -93,7 +106,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
                 type="text" 
                 id="name" 
                 name="name" 
-                v-model.trim="$v.name.$model" 
+                v-model.trim="name" 
             />
 
             <div class="form__error" v-if="!$v.name.minLength">В имени должно быть не менее {{$v.name.$params.minLength.min}} букв.</div>

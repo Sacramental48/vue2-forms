@@ -20,7 +20,16 @@ export default {
             } else {
                 return !/\d/.test(value);
             }
-        }
+        },
+        getFormData() {
+            return {
+                index: this.index,
+                country: this.country,
+                city: this.city,
+                street: this.street,
+                house: this.house,
+            };
+        },
     },
     validations: {
         index: {
