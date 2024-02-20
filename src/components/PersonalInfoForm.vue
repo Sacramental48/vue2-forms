@@ -1,94 +1,91 @@
 <script>
-import { required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators'
-export default {
-    name: 'PersonalInfoForm',
-    data() {
-        return {
-            name: '',
-            surname: '',
-            patronymic: '',
-            birthdёate: '',
-            phone: '',
-            gender: '',
-            clientGroup: [],
-            doctor: '',
-            checkbox: false
-        }
-    },
-    methods: {
-        validPersonName(value) {
-            if(value === '') {
-                return true
-            } else {
-                const startsWithUppercase = /^[A-ZА-ЯЁ]/.test(value);
-                const withoutDigits = !/\d/.test(value);
-                return startsWithUppercase && withoutDigits;
+import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
+    export default {
+        name: 'PersonalInfoForm',
+        data() {
+            return {
+                name: '',
+                surname: '',
+                patronymic: '',
+                birthdate: '',
+                phone: '',
+                gender: '',
+                clientGroup: [],
+                doctor: '',
+                checkbox: false
             }
-        }
-    },
-    validations: {
-        name: {
-            required,
-            minLength: minLength(2),
-            maxLength: maxLength(50),
+        },
+        methods: {
             validPersonName(value) {
-                return this.validPersonName(value);
-            }
-        },
-
-        surname: {
-            required,
-            minLength: minLength(2),
-            maxLength: maxLength(50),
-            validPersonName(value) {
-                return this.validPersonName(value);
-            }
-        },
-
-        patronymic: {
-            minLength: minLength(2),
-            maxLength: maxLength(50),
-            validPersonName(value) {
-                return this.validPersonName(value);
-            }
-        },
-
-        birthdate: {
-            required,
-            maxDate(value) {
-                return new Date(value) <= new Date();
-            }
-        },
-
-        phone: {
-            required,
-            maxLength: maxLength(11),
-            validatePhoneNumber(value) {
-                value = value.replace(/\D/g, '');
-
-                if (/^7\d{10}$/.test(value)) {
-                    return true;
+                if(value === '') {
+                    return true
                 } else {
-                    return false;
+                    const startsWithUppercase = /^[A-ZА-ЯЁ]/.test(value);
+                    const withoutDigits = !/\d/.test(value);
+                    return startsWithUppercase && withoutDigits;
                 }
-            }
+            },
+            getFormData() {
+                return {
+                    name: this.name,
+                    surname: this.surname,
+                    patronymic: this.patronymic,
+                    birthdate: this.birthdate,
+                    phone: this.phone,
+                    gender: this.gender,
+                    clientGroup: this.clientGroup,
+                    doctor: this.doctor,
+                    checkbox: this.checkbox
+                };
+            },
         },
+        validations: {
+            name: {
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(50),
+                validPersonName(value) {
+                    return this.validPersonName(value);
+                }
+            },
 
-        gender: {
+            surname: {
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(50),
+                validPersonName(value) {
+                    return this.validPersonName(value);
+                }
+            },
 
+            patronymic: {
+                minLength: minLength(2),
+                maxLength: maxLength(50),
+                validPersonName(value) {
+                    return this.validPersonName(value);
+                }
+            },
+
+            birthdate: {
+                required,
+                maxDate(value) {
+                    return new Date(value) <= new Date();
+                }
+            },
+
+            phone: {
+                required,
+                minLength: minLength(11),
+                maxLength: maxLength(11),
+                numeric,
+            },
+
+            clientGroup: {
+                required,
+
+            },
         },
-
-        clientGroup: {
-            required,
-
-        },
-
-        doctor: {
-
-        }
-
-    },
-}
+    }
 </script>
 
 <template>
@@ -101,12 +98,13 @@ export default {
                 type="text" 
                 id="name" 
                 name="name" 
-                v-model.trim="$v.name.$model" 
+                v-model.trim="name" 
             />
-
+            <div class="form__error" v-if="$v.name.$dirty && !$v.name.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.name.minLength">В имени должно быть не менее {{$v.name.$params.minLength.min}} букв.</div>
             <div class="form__error" v-if="!$v.name.maxLength">В имени должно быть не более {{$v.name.$params.maxLength.max}} букв.</div>
-            <div class="form__error" v-if="$v.name.$dirty && !$v.name.validPersonName && $v.name.$model">Имя должно начинаться с заглавной буквы и не содержать цифры.</div>
+            <div class="form__error" v-if="!$v.name.$dirty && !$v.name.validPersonName && $v.name.$model">Имя должно начинаться с заглавной буквы и не содержать цифры.</div>
+
         </section>
 
         <section class="form__group">
@@ -119,7 +117,7 @@ export default {
                 name="surname" 
                 v-model.trim="$v.surname.$model" 
             />
-
+            <div class="form__error" v-if="$v.surname.$dirty && !$v.surname.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.surname.minLength">В Фамилии должно быть не менее {{$v.surname.$params.minLength.min}} букв.</div>
             <div class="form__error" v-if="!$v.surname.maxLength">В Фамилии должно быть не более {{$v.surname.$params.maxLength.max}} букв.</div>
             <div class="form__error" v-if="$v.surname.$dirty && !$v.surname.validPersonName && $v.surname.$model">Фамилия должно начинаться с заглавной буквы и не содержать цифры.</div>
@@ -159,17 +157,21 @@ export default {
             <label class="form__label" for="phone">Номер телефона:</label>
             <input 
                 class="form__input" 
+                :class="{'input-error': !$v.phone.minLength || !$v.phone.numeric }" 
                 type="tel" 
                 id="phone" 
                 name="phone" 
                 v-model.trim="$v.phone.$model" 
             />
-            <div class="form__error" v-if="$v.phone.$dirty && $v.phone.$model && !$v.phone.validatePhoneNumber">Введен некорректный номер.</div>
+            <div class="form__error" v-if="$v.phone.$dirty && !$v.phone.required">Это поле должно быть заполнено.</div>
+            <div class="form__error" v-if="!$v.phone.numeric">Введен некорректный номер.</div>
+            <div class="form__error" v-if="!$v.phone.minLength">Номер должен состоять из {{ $v.phone.$params.maxLength.max }} цифр.</div>
+            <div class="form__error" v-if="!$v.phone.maxLength">Введен вами номер превышает {{ $v.phone.$params.maxLength.max }} символов.</div>
         </section>
 
         <section class="form__group">
             <label class="form__label" for="gender">Пол:</label>
-            <select id="gender" name="gender" v-model="$v.gender.$model">
+            <select id="gender" name="gender" v-model="gender">
                 <option value="" disabled selected>Выберите пол</option>
                 <option value="male">Мужчина</option>
                 <option value="female">Женщина</option>
@@ -183,11 +185,12 @@ export default {
                 <option value="problem">Проблемные</option>
                 <option value="OMS">ОМС</option>
             </select>
+            <div class="form__error" v-if="$v.clientGroup.$dirty && !$v.clientGroup.required">Значение должно быть выбрано.</div>
         </section>
         
         <section class="form__group">
             <label class="form__label" for="doctor">Лечащий врач:</label>
-            <select  name="doctor" id="doctor" v-model="$v.doctor.$model">
+            <select  name="doctor" id="doctor" v-model="doctor">
                 <option value="" disabled checked>Выберите врача</option>
                 <option value="Иванов">Иванов</option>
                 <option value="Захаров">Захаров</option>
