@@ -32,6 +32,7 @@ export default {
                 this.formData.addressForm = this.$refs.addressInfoForm.getFormData();
                 this.formData.documentsForm = this.$refs.documentInfoForm.getFormData();
                 this.isFormCorrect = true;
+                console.log(this.$refs.personalInfoForm.getFormData(), this.$refs.addressInfoForm.getFormData(), this.$refs.documentInfoForm.getFormData());
             }
         },
         incrementCount() {

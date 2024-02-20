@@ -1,5 +1,5 @@
 <script>
-import { maxLength, minLength, required, numeric } from 'vuelidate/lib/validators'
+import { maxLength, minLength, required, numeric, alphaNum } from 'vuelidate/lib/validators'
 
 export default {
     name: 'AddressInfoForm',
@@ -64,10 +64,7 @@ export default {
         },
 
         house: {
-            numeric,
-            withoutDigits(value) {
-                return this.withoutDigits(value);
-            },
+            alphaNum
         }
     }
 
@@ -147,13 +144,13 @@ export default {
             <label class="form__label" for="house">Дом</label>
             <input 
                 class="form__input" 
-                :class="{'input-error': !$v.house.numeric}"
+                :class="{'input-error': !$v.house.alphaNum}"
                 type="text" 
                 id="house" 
                 name="house" 
                 v-model.trim="$v.house.$model" 
             />
-            <div class="form__error" v-if="!$v.house.numeric">Некорректный номер дома.</div>
+            <div class="form__error" v-if="!$v.house.alphaNum">Некорректный номер дома.</div>
         </section>
     </article>
 </template>
