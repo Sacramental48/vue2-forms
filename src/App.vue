@@ -17,7 +17,8 @@ export default {
                 personalForm: {},
                 addressForm: {},
                 documentsForm: {}
-            }
+            },
+            isFormCorrect: false,
         }
     },
     methods: {
@@ -27,9 +28,11 @@ export default {
             this.$refs.documentInfoForm.$v.$touch();
             
             if (!this.$refs.personalInfoForm.$v.$invalid && !this.$refs.addressInfoForm.$v.$invalid && this.$refs.documentInfoForm.$v.$invalid) {
+                console.log('work');
                 this.formData.personalForm = this.$refs.personalInfoForm.getFormData();
                 this.formData.addressForm = this.$refs.addressInfoForm.getFormData();
                 this.formData.documentsForm = this.$refs.documentInfoForm.getFormData();
+                this.isFormCorrect = true;
             }
         },
         incrementCount() {
@@ -41,7 +44,7 @@ export default {
             if (this.count > 0) {
                 this.count--;
             }
-        }
+        },
     },
 }
 </script>
@@ -56,7 +59,13 @@ export default {
                 <button type="button" @click="decrementCount" :disabled="count === 0">Назад</button>
                 <button type="button" @click="incrementCount" :disabled="count === 2">Дальше</button>
             </div>
-            <button class="wrapper__send" v-if="count === 2" type="submit">Отправить</button>
+            <button class="wrapper__send" type="submit">Отправить</button>
         </form>
+        <div class="wrapper__success" v-if="isFormCorrect">
+            <h2 class="success__title">Форма успешно создана!</h2>
+            <div class="success__buttons">
+                <button  @click="isFormCorrect = false">Отлично!</button>
+            </div>
+        </div>
     </div>
 </template>

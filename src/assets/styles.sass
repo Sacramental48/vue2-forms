@@ -2,6 +2,7 @@
     display: flex
     justify-content: center
     font-family: sans-serif
+    position: relative
     &__form
         display: flex
         flex-direction: column
@@ -17,6 +18,18 @@
             option
                 font-size: 16px
                 padding: 4px
+    &__success
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        align-items: center
+        position: absolute
+        top: 20%
+        background-color: #dae0e7
+        padding:  0px 30px
+        height: 192px
+        border-radius: 4px
+        border: 1px solid #998f8f
         
     &__group-buttons
         display: flex
@@ -67,3 +80,20 @@
         color: red
 .input-error 
     border: 1px solid red 
+
+.success
+    &__title
+        font-size: 30px
+        color: #000000
+    &__buttons
+        display: flex
+        gap: 20px
+        button
+            background-color: #fff
+            color: #000
+            border: none
+            width: 80px
+            padding: 6px 8px
+            border-radius: 4px
+            cursor: pointer
+            margin-bottom: 20px
