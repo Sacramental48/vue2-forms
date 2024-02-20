@@ -1,94 +1,86 @@
 <script>
-import { required, minLength, maxLength, minValue, maxValue } from 'vuelidate/lib/validators'
-export default {
-    name: 'PersonalInfoForm',
-    data() {
-        return {
-            name: '',
-            surname: '',
-            patronymic: '',
-            birthdёate: '',
-            phone: '',
-            gender: '',
-            clientGroup: [],
-            doctor: '',
-            checkbox: false
-        }
-    },
-    methods: {
-        validPersonName(value) {
-            if(value === '') {
-                return true
-            } else {
-                const startsWithUppercase = /^[A-ZА-ЯЁ]/.test(value);
-                const withoutDigits = !/\d/.test(value);
-                return startsWithUppercase && withoutDigits;
+import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
+    export default {
+        name: 'PersonalInfoForm',
+        data() {
+            return {
+                name: '',
+                surname: '',
+                patronymic: '',
+                birthdate: '',
+                phone: '',
+                gender: '',
+                clientGroup: [],
+                doctor: '',
+                checkbox: false
             }
-        }
-    },
-    validations: {
-        name: {
-            required,
-            minLength: minLength(2),
-            maxLength: maxLength(50),
+        },
+        methods: {
             validPersonName(value) {
-                return this.validPersonName(value);
-            }
-        },
-
-        surname: {
-            required,
-            minLength: minLength(2),
-            maxLength: maxLength(50),
-            validPersonName(value) {
-                return this.validPersonName(value);
-            }
-        },
-
-        patronymic: {
-            minLength: minLength(2),
-            maxLength: maxLength(50),
-            validPersonName(value) {
-                return this.validPersonName(value);
-            }
-        },
-
-        birthdate: {
-            required,
-            maxDate(value) {
-                return new Date(value) <= new Date();
-            }
-        },
-
-        phone: {
-            required,
-            maxLength: maxLength(11),
-            validatePhoneNumber(value) {
-                value = value.replace(/\D/g, '');
-
-                if (/^7\d{10}$/.test(value)) {
-                    return true;
+                if(value === '') {
+                    return true
                 } else {
-                    return false;
+                    const startsWithUppercase = /^[A-ZА-ЯЁ]/.test(value);
+                    const withoutDigits = !/\d/.test(value);
+                    return startsWithUppercase && withoutDigits;
                 }
             }
         },
+        validations: {
+            name: {
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(50),
+                validPersonName(value) {
+                    return this.validPersonName(value);
+                }
+            },
 
-        gender: {
+            surname: {
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(50),
+                validPersonName(value) {
+                    return this.validPersonName(value);
+                }
+            },
+
+            patronymic: {
+                minLength: minLength(2),
+                maxLength: maxLength(50),
+                validPersonName(value) {
+                    return this.validPersonName(value);
+                }
+            },
+
+            birthdate: {
+                required,
+                maxDate(value) {
+                    return new Date(value) <= new Date();
+                }
+            },
+
+            phone: {
+                required,
+                maxLength: maxLength(11),
+                numeric,
+            },
+
+            gender: {
+
+            },
+
+            clientGroup: {
+                required,
+
+            },
+
+            doctor: {
+
+            }
 
         },
-
-        clientGroup: {
-            required,
-
-        },
-
-        doctor: {
-
-        }
-
-    },
-}
+    }
 </script>
 
 <template>
@@ -159,12 +151,14 @@ export default {
             <label class="form__label" for="phone">Номер телефона:</label>
             <input 
                 class="form__input" 
+                :class="{'input-error': !$v.phone.numeric && $v.phone.$dirty }" 
                 type="tel" 
                 id="phone" 
                 name="phone" 
                 v-model.trim="$v.phone.$model" 
             />
-            <div class="form__error" v-if="$v.phone.$dirty && $v.phone.$model && !$v.phone.validatePhoneNumber">Введен некорректный номер.</div>
+            <div class="form__error" v-if="!$v.phone.numeric">Введен некорректный номер.</div>
+            <div class="form__error" v-if="!$v.phone.maxLength">Введен вами номер превышает {{ $v.phone.$params.maxLength.max }} символов.</div>
         </section>
 
         <section class="form__group">
