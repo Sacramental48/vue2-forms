@@ -13,16 +13,25 @@ export default {
     data() {
         return {
             count: 0,
+            formData: {
+                personalForm: {},
+                addressForm: {},
+                documentsForm: {}
+            }
         }
     },
     methods: {
-        submit() {
-            const PersonFormData = this.$refs.personalInfoForm.getFormData();
-            const AddressFormData = this.$refs.addressInfoForm.getFormData();
-            const DocumentsormData = this.$refs.documentsInfoForm.getFormData();
-            console.log({...PersonFormData, ...AddressFormData, ...DocumentsormData});
+        submitForm() {
+            this.$refs.personalInfoForm.$v.$touch();
+            this.$refs.addressInfoForm.$v.$touch();
+            this.$refs.documentsInfoForm.$v.$touch();
+            
+            if (!this.$refs.personalInfoForm.$v.$invalid && !this.$refs.addressInfoForm.$v.$invalid && !this.$refs.documentsInfoForm.$v.$invalid) {
+                this.formData.personalForm = this.$refs.personalInfoForm.getFormData();
+                this.formData.addressForm = this.$refs.addressInfoForm.getFormData();
+                this.formData.documentsForm = this.$refs.documentsInfoForm.getFormData();
+            }   
         },
-
         incrementCount() {
             if (this.count < 2) {
                 this.count++;
@@ -39,7 +48,7 @@ export default {
 
 <template>
     <div id="app" class="wrapper">
-        <form class="wrapper__form" @submit.prevent="submit">
+        <form class="wrapper__form" @submit.prevent="submitForm">
             <PersonalInfoForm v-show="count === 0" ref="personalInfoForm" />
             <AddressInfoForm v-show="count === 1" ref="addressInfoForm" />
             <DocumentInfoForm v-show="count === 2" ref="documentsInfoForm" />

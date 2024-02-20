@@ -126,6 +126,7 @@ export default {
                 name="city" 
                 v-model.trim="$v.city.$model" 
             />
+            <div class="form__error" v-if="$v.city.$dirty && !$v.city.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.city.withoutDigits">Некорректное название города.</div>
         </section>
 

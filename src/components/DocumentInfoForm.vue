@@ -22,6 +22,13 @@ export default {
                 issueDate: this.issueDate,
             };
         },
+        withoutDigits(value) {
+            if(value === '') {
+                return true;
+            } else {
+                return !/\d/.test(value);
+            }
+        },
     },
     validations: {
         documentType: {
@@ -40,7 +47,9 @@ export default {
         },
         
         issuedBy: {
-            alpha
+            withoutDigits(value) {
+                return this.withoutDigits(value);
+            }
         },
         
         issueDate: {
@@ -68,6 +77,7 @@ export default {
                 <option value="birthCertificate">Свидетельство о рождении</option>
                 <option value="driverLicense">Вод. удостоверение</option>
             </select>
+            <div class="form__error" v-if="$v.documentType.$dirty && !$v.documentType.required">Значение должно быть выбрано.</div>
         </section>
 
         <section class="form__group">
@@ -102,12 +112,13 @@ export default {
             <label class="form__label" for="issuedBy">Кем выдан</label>
             <input 
                 class="form__input" 
+                :class="{'input-error': !$v.issuedBy.withoutDigits}"
                 type="text" 
                 id="issuedBy" 
                 name="issuedBy"
                 v-model="$v.issuedBy.$model"
             />
-            <div class="form__error" v-if="!$v.issuedBy.alpha">adassdadasdasdas</div>
+            <div class="form__error" v-if="!$v.issuedBy.withoutDigits">Введенны некорректные данные.</div>
         </section>
 
         <section class="form__group">
@@ -119,6 +130,7 @@ export default {
                 name="issueDate" 
                 v-model="$v.issueDate.$model"
             />
+            <div class="form__error" v-if="$v.issueDate.$dirty && !$v.issueDate.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.issueDate.maxDate">Введите корректную дату выдачи.</div>
         </section>
     </article>

@@ -108,7 +108,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
                 name="name" 
                 v-model.trim="name" 
             />
-
+            <div class="form__error" v-if="$v.name.$dirty && !$v.name.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.name.minLength">В имени должно быть не менее {{$v.name.$params.minLength.min}} букв.</div>
             <div class="form__error" v-if="!$v.name.maxLength">В имени должно быть не более {{$v.name.$params.maxLength.max}} букв.</div>
             <div class="form__error" v-if="$v.name.$dirty && !$v.name.validPersonName && $v.name.$model">Имя должно начинаться с заглавной буквы и не содержать цифры.</div>
@@ -124,7 +124,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
                 name="surname" 
                 v-model.trim="$v.surname.$model" 
             />
-
+            <div class="form__error" v-if="$v.surname.$dirty && !$v.surname.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.surname.minLength">В Фамилии должно быть не менее {{$v.surname.$params.minLength.min}} букв.</div>
             <div class="form__error" v-if="!$v.surname.maxLength">В Фамилии должно быть не более {{$v.surname.$params.maxLength.max}} букв.</div>
             <div class="form__error" v-if="$v.surname.$dirty && !$v.surname.validPersonName && $v.surname.$model">Фамилия должно начинаться с заглавной буквы и не содержать цифры.</div>
@@ -170,6 +170,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
                 name="phone" 
                 v-model.trim="$v.phone.$model" 
             />
+            <div class="form__error" v-if="$v.phone.$dirty && !$v.phone.required">Это поле должно быть заполнено.</div>
             <div class="form__error" v-if="!$v.phone.numeric">Введен некорректный номер.</div>
             <div class="form__error" v-if="!$v.phone.maxLength">Введен вами номер превышает {{ $v.phone.$params.maxLength.max }} символов.</div>
         </section>
@@ -190,6 +191,7 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
                 <option value="problem">Проблемные</option>
                 <option value="OMS">ОМС</option>
             </select>
+            <div class="form__error" v-if="$v.clientGroup.$dirty && !$v.clientGroup.required">Значение должно быть выбрано.</div>
         </section>
         
         <section class="form__group">
