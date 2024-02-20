@@ -1,0 +1,44 @@
+.wrapper
+    display: flex
+    justify-content: center
+    font-family: sans-serif
+    &__form
+        display: flex
+        flex-direction: column
+        flex-grow: 1
+        background: #f0f0f0
+        max-width: 800px
+        padding: 10px 25px
+        select
+            margin-bottom: 20px
+            outline: none
+    &__group-buttons
+        display: flex
+        justify-content: space-between
+        button
+            border: 1px solid #020202
+            cursor: pointer
+    &__button
+        margin-top: 20px
+        cursor: pointer
+.form
+    &__group
+        display: flex
+        flex-direction: column
+        margin-bottom: 26px
+    &__label
+        margin-bottom: 4px
+    &__input
+        outline: none
+        border-radius: 4px
+        border: 1px solid #f0f0f0
+        height: 30px
+        font-size: 18px
+        padding-left: 10px
+    &__input-checkbox
+        margin-bottom: 20px
+    &__error
+        font-size: 12px
+        color: red
+.input-error 
+    border: 1px solid red 
